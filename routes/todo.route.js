@@ -14,7 +14,7 @@ router.post('/createtodos', (req, res) => {
     });
 
     Todo.save().then((savedTodos) =>{
-        res.status(201).json({ message: 'Successfully saved Todos' });
+        res.status(201).json({savedTodos});
     })
     .catch((err) =>{
         res.json({ message: err })
@@ -60,7 +60,7 @@ router.put('/updatetodo/:id', (req, res) => {
         title,
         content
     })
-    Todo.updateOne(_id)
+    Todo.findOneAndUpdate(_id)
     .then((todoId) => {
         res.status(200).json({ todoId })
     })
