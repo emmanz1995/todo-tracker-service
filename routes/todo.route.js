@@ -13,60 +13,75 @@ router.post('/createtodos', (req, res) => {
         content
     });
 
-    Todo.save().then((savedTodos) =>{
-        res.status(201).json({savedTodos});
-    })
-    .catch((err) =>{
-        res.json({ message: err })
+    Todo.save((error, doc) => {
+        if(error) {
+            res.status(500).json({message: error});
+            console.log('ERROR, failure to save new todos');
+        } else {
+            console.log('Successfully saved new todo!');
+            res.status(201).json({message: doc})
+        }
     })
 })
 
 router.get('/gettodos', (req, res) => {
-    todo.find()
-    .then((todos) => {
-        res.status(200).json({todos})
-    })
-    .catch((err) => {
-        res.status(404).json({message: err})
+    todo.find((error, doc) => {
+        if(error) {
+            console.log('ERROR '+ error);
+            res.status(500).json({message: error});
+        } else {
+            console.log('Everything was fetched!')
+            res.status(200).json({message: doc})
+        }
     })
 })
 
 router.get('/gettodos/:id', (req, res) => {
-    const { _id } = req.params;
-    todo.findOne(_id)
-    .then((todoId) => {
-        res.status(200).json({ todoId })
+    // const { _id } = req.params;
+    todo.findOne({_id: req.params.id}, (error, doc) => {
+        if(error) {
+            console.log('ERROR', error)
+            res.json({ message: error })
+        } else {
+            console.log('Fetched todo!');
+            res.status(200).json({ message: doc })
+        }
     })
-    .catch((err) => {
-        res.json({ message: err })
-    })
+    // .then((todoId) => {
+    //     res.status(200).json({ todoId })
+    // })
+    // .catch((err) => {
+    //     res.json({ message: err })
+    // })
 })
 
 router.delete('/removetodo/:id', (req, res) => {
-    const { _id } = req.params;
-    todo.deleteOne(_id)
-    .then((todoId) => {
-        res.status(200).json({ todoId })
-    })
-    .catch((err) => {
-        res.json({ message: err });
+    todo.deleteOne( { _id: req.params.id }, (error, doc) => {
+        if(!error) {
+            console.log('Successfully Deleted Todo!')
+            res.status(200).json({message: doc});
+        } else {
+            console.log('ERROR', error);
+            res.status(500).json({message: error});
+        }
     })
 })
 
 router.put('/updatetodo/:id', (req, res) => {
     const { title, content } = req.body;
-    const { _id } = req.params;
     const Todo = todo.updateOne({
         title,
         content
     })
-    Todo.findOneAndUpdate(_id)
-    .then((todoId) => {
-        res.status(200).json({ todoId })
+    Todo.findOneAndUpdate({ _id: req.params.id }, (error, doc) => {
+        if(error) {
+            console.log('ERROR', error);
+            res.status(500).json({message: error})
+        } else {
+            console.log('Successfully updated!')
+            res.status(200).json({message: doc})
+        }
     })
-    .catch((err) => {
-        res.json({message: err});
-    });
 });
 
 module.exports = router;
