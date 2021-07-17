@@ -28,7 +28,7 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(bodyParser.json());
 
@@ -38,7 +38,7 @@ app.use(express.json());
 app.use(require('./routes/todo.route'));
 
 app.get('/', (req, res) => {
-    res.json({message: 'Welcome to the Todo Service'});
+    res.json({ message: 'Welcome to the Todo Service' });
 });
 
 app.listen(PORT, () => {
