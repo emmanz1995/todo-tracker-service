@@ -2,12 +2,17 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const PORT = 5000;
+const PORT = 5001;
 const mongoose = require('mongoose');
 const db = mongoose.connection;
-const { MONGOURI } = require('./keys');
+// const { MONGOURI } = require('./keys');
+const dotenv = require('dotenv');
 
-mongoose.connect(MONGOURI, {
+dotenv.config()
+
+const { DB_CONNECTION_STRING } = process.env;
+
+mongoose.connect(DB_CONNECTION_STRING, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })

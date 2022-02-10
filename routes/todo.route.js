@@ -37,7 +37,7 @@ router.get('/gettodos', (req, res) => {
 });
 
 router.get('/gettodos/:id', (req, res) => {
-    todo.findOne({_id: req.params.id}, (error, doc) => {
+    todo.findById({_id: req.params.id}, (error, doc) => {
         if(error) {
             console.log('ERROR', error);
             res.json({ message: error });
@@ -62,15 +62,14 @@ router.delete('/removetodo/:id', (req, res) => {
 
 router.put('/updatetodo/:id', (req, res) => {
     const { title, content } = req.body;
-    todo.updateOne({ _id: req.params.id }, {title, content}, (error, doc) => {
-        if(error) {
-            console.log('ERROR', error);
-            res.status(500).json({message: error});
-        } else {
-            console.log('Successfully updated!');
-            res.status(200).json({message: 'Successfully Updated Todo!'});
-        }
-    });
+    const todoId = req.params.id
+    todo.findById(todoId).then((update) => {
+        update.updateOne({ title, content })
+        res.status(200).json(update)
+    }).catch((error) => {
+        console.log('ERROR', error);
+        res.status(500).json(error);
+    })
 });
 
 module.exports = router;
