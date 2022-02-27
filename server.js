@@ -3,27 +3,9 @@ const app = express();
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const PORT = 5001;
-const mongoose = require('mongoose');
-const db = mongoose.connection;
-// const { MONGOURI } = require('./keys');
-const dotenv = require('dotenv');
+const dbConfig = require('./dbConfig');
 
-dotenv.config()
-
-const { DB_CONNECTION_STRING } = process.env;
-
-mongoose.connect(DB_CONNECTION_STRING, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-})
-
-db.once('connected', () => {
-    console.log('Mongo connection established!');
-});
-
-db.on('error', (err) => {
-    console.log(err);
-});
+dbConfig
 
 const corsOptions = {
     origin: 'http://localhost:3000',
