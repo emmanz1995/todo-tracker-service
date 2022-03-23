@@ -4,6 +4,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const PORT = 5001;
 const dbConfig = require('./dbConfig');
+const { errorHandler } = require('./error-handler/errorHandler');
 
 dbConfig
 
@@ -12,6 +13,8 @@ const corsOptions = {
     credentials: true,
     optionSuccessStatus: 200
 };
+
+// app.use(errorHandler)
 
 app.use(cors(corsOptions));
 

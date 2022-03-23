@@ -3,21 +3,11 @@ const express = require('express');
 const router = express();
 const { createTodo, getTodos, updateTodo, deleteTodo, getTodo } = require('../controllers/todo.controller');
 
-router.post('/createtodos', createTodo);
+router.post('/createtodo', createTodo);
 
 router.get('/gettodos', getTodos);
 
-router.get('/gettodos/:id', (req, res) => {
-    todo.findById({_id: req.params.id}, (error, doc) => {
-        if(error) {
-            console.log('ERROR', error);
-            res.json({ message: error });
-        } else {
-            console.log('Fetched todo!');
-            res.status(200).json({ doc });
-        }
-    });
-});
+router.get('/gettodos/:id', getTodo);
 
 router.delete('/removetodo/:id', deleteTodo);
 

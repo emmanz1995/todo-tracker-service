@@ -20,6 +20,7 @@ const createTodo = async (req, res) => {
     } catch(err) {
         console.log(err);
         res.status(500).json(err);
+        // throw new ErrorException(ErrorCode.NotFound)
     }
 }
 
@@ -36,7 +37,16 @@ const getTodos = async (req, res) => {
     }
 }
 
-const getTodo = async (req, res) => {}
+const getTodo = async (req, res) => {
+    const todoId = req.params.id;
+    try {
+        const findSingleTodo = await Todo.findById(todoId);
+        res.status(200).json(findSingleTodo);
+    } catch(err) {
+        console.log(err);
+        res.status(500).json(err);
+    }
+}
 
 const updateTodo = async (req, res) => {
     const { title, content } = req.body;
